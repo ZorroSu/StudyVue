@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    {{message}}
+    <cpn :c-arr="movices" :c-msg="message" @itemclick="cpnclick"></cpn>
+  </div>
+  <template id="cpn">
+    <div>
+      <h2>当前计数：{{counter}}</h2>
+      <button @click="decreate" :disabled="counter<=0">-</button>
+      <button @click="increate">+</button>
+      <ul>
+        <li v-for="item in cArr">{{item}}</li>
+      </ul>
+      <p>{{cMsg}}</p>
+      <br>
+          <button v-for="category in categories" @click="selectType(category.id)">{{category.name}}</button>
+    </div>
+  </template>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    Vue.component('cpn',{
+      template:'#cpn',
+      data(){
+        return{
+          title:'组件',
+          counter:0,
+          categories:[
+            {id:'a',name:'热门推荐'},
+            {id:'b',name:'3C数码'},
+            {id:'c',name:'家用电器'},
+            {id:'d',name:'新鲜食材'}
+          ]
+        }
+      },
+      props:{
+        cArr:Array,
+        cMsg:{
+          type:String,
+          default:'默认',
+          required:true
+      }},
+      methods:{
+        increate(){
+          this.counter++;
+        },
+        decreate(){
+          this.counter--;
+        },
+        selectType(id){
+          // 把内容返回给父组件
+          this.$emit('itemclick',id)
+        }
+      }
+    })
+
+
+    const app = new Vue({
+      el:'#app',
+      data:{
+        message:'组件',
+        movices:['哈利波特','变形金刚','复仇者联盟','指环王']
+      },
+      methods:{
+        cpnclick(id){
+          console.log(id)
+        }
+      }
+    })
+
+    
+  </script>
+</body>
+</html>

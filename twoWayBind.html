@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <p>{{anumber}}</p>
+    <input type="text" v-model="anumber">
+    <cpn :number1="anumber" @numberchange="getnumber"></cpn>
+  </div>
+  <template id="cpn">
+    <div>
+      <p>dnumber1：{{dnumber1}}</p>
+      <!-- <input type="text" @input="changeNumber" :value="dnumber1"> -->
+      <input type="text" v-model="dnumber1">
+    </div>
+  </template>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    Vue.component('cpn',{
+      template:'#cpn',
+      data(){
+        return{
+          dnumber1:this.number1
+        }
+      },
+      props:{
+        number1:{
+          type:String,
+          default:"0"
+        }
+      },
+      // methods: {
+      //   changeNumber(event){
+      //     this.dnumber1 = event.target.value;
+      //     this.$emit('numberchange',this.dnumber1)
+      //   }
+      // },
+      watch:{
+        dnumber1(value){
+          this.dnumber1 = value;
+          this.$emit('numberchange',value)
+        }
+      }
+    })
+
+    const app = new Vue({
+      el:'#app',
+      data:{
+        anumber:"0"
+      },
+      methods: {
+        getnumber(num){
+          this.anumber = num;
+        }
+      },
+    })
+  </script>
+</body>
+</html>

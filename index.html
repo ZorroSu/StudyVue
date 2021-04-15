@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app-3" v-cloak>
+    <p>{{info.name}}</p>
+    <p>{{info.address.street}}</p>
+    <ul>
+      <li v-for="item in info.links">
+        <a :href="item.url">{{item.name}}</a>
+      </li>
+    </ul>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    var app3 = new Vue({
+      el: '#app-3',
+      data: {
+        message: "",
+        count: 0,
+        arr: ["吃饭", "睡觉", "打豆豆"]
+      },
+      methods: {
+        add: function () {
+          this.arr.push(this.message)
+        },
+        clear: function () {
+          this.arr = [];
+        },
+        remove: function (index) {
+          this.arr.splice(index, 1);
+        }
+      },
+      data() {
+        return {
+          info: {
+            "name": null,
+            "address": {
+              "street": null,
+              "city": null,
+              "country": null
+            },
+            "links": []
+          }
+        }
+      },
+      mounted() {
+        axios.get("./data.json")
+          .then(res => {
+            console.log(res)
+            this.info = res.data;
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      },
+      computed: {
+        currentTime: function () {
+          return Date.now();
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
